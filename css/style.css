@@ -1813,6 +1813,10 @@ html {
   letter-spacing: 1px;
   transition: all 0.3s ease;
   box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  width: auto;
+  font-family: inherit;
 }
 
 .booknow:hover {

@@ -535,7 +535,7 @@ function renderPackages(pkgs, containerId) {
         });
         
         html += '</ul>';
-        html += `<a class="booknow" href="${pkg.link}" data-en="Subscribe Now" data-ar="اشترك الآن">Subscribe Now</a>`;
+        html += `<button class="booknow" onclick="window.location.href='${pkg.link}'" data-en="Subscribe Now" data-ar="اشترك الآن">Subscribe Now</button>`;
         
         item.innerHTML = html;
         itemsDiv.appendChild(item);
