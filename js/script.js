@@ -535,7 +535,7 @@ function renderPackages(pkgs, containerId) {
         });
         
         html += '</ul>';
-        html += `<button class="booknow" onclick="window.location.href='${pkg.link}'" data-en="Subscribe Now" data-ar="اشترك الآن">Subscribe Now</button>`;
+        html += `<button class="booknow" onclick="showPaymentPopup('${pkg.name}', '${pkg.price}', '${pkg.duration[currentLang]}')" data-en="Subscribe Now" data-ar="اشترك الآن">Subscribe Now</button>`;
         
         item.innerHTML = html;
         itemsDiv.appendChild(item);
@@ -771,6 +771,7 @@ function closeResultsModal() {
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-overlay')) {
         closeResultsModal();
+        closePaymentPopup();
     }
 });
 
@@ -778,5 +779,38 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeResultsModal();
+        closePaymentPopup();
     }
 });
+
+// Payment Popup Functions
+function showPaymentPopup(packageName, price, duration) {
+    const modal = document.getElementById('paymentModal');
+    
+    // Update modal content
+    document.getElementById('paymentPackageName').textContent = packageName;
+    document.getElementById('paymentPrice').textContent = price;
+    document.getElementById('paymentDuration').textContent = duration;
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePaymentPopup() {
+    const modal = document.getElementById('paymentModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Show a brief confirmation
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = currentLang === 'en' ? 'Copied!' : 'تم النسخ!';
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 2000);
+    });
+}
