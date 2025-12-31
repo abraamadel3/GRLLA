@@ -480,3 +480,126 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+// Fitness Calculator Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const fitnessForm = document.getElementById('fitnessCalculatorForm');
+    
+    if (fitnessForm) {
+        fitnessForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateFitness();
+        });
+    }
+});
+
+function calculateFitness() {
+    // Get form values
+    const age = parseInt(document.getElementById('age').value);
+    const gender = document.getElementById('gender').value;
+    const weight = parseFloat(document.getElementById('weight').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const activity = document.getElementById('activity').value;
+    
+    // Calculate BMI
+    const heightInMeters = height / 100;
+    const bmi = weight / (heightInMeters * heightInMeters);
+    
+    // Determine BMI category
+    let bmiCategory = '';
+    let bmicategoryClass = '';
+    if (bmi < 18.5) {
+        bmiCategory = currentLang === 'en' ? 'Underweight' : 'نقص الوزن';
+        bmicategoryClass = 'underweight';
+    } else if (bmi >= 18.5 && bmi < 25) {
+        bmiCategory = currentLang === 'en' ? 'Normal Weight' : 'وزن طبيعي';
+        bmicategoryClass = 'normal';
+    } else if (bmi >= 25 && bmi < 30) {
+        bmiCategory = currentLang === 'en' ? 'Overweight' : 'زيادة في الوزن';
+        bmicategoryClass = 'overweight';
+    } else {
+        bmiCategory = currentLang === 'en' ? 'Obese' : 'سمنة';
+        bmicategoryClass = 'obese';
+    }
+    
+    // Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation
+    let bmr;
+    if (gender === 'male') {
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+    } else {
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+    }
+    
+    // Calculate TDEE (Total Daily Energy Expenditure) based on activity level
+    const activityMultipliers = {
+        sedentary: 1.2,
+        light: 1.375,
+        moderate: 1.55,
+        very: 1.725,
+        extra: 1.9
+    };
+    
+    const tdee = Math.round(bmr * activityMultipliers[activity]);
+    
+    // Calculate ideal weight range (using BMI 18.5-24.9)
+    const minIdealWeight = (18.5 * heightInMeters * heightInMeters).toFixed(1);
+    const maxIdealWeight = (24.9 * heightInMeters * heightInMeters).toFixed(1);
+    const idealWeightRange = `${minIdealWeight} - ${maxIdealWeight} kg`;
+    
+    // Generate recommendation
+    let recommendation = '';
+    if (bmi < 18.5) {
+        recommendation = currentLang === 'en' 
+            ? 'You are underweight. Focus on a calorie surplus with strength training to build healthy muscle mass. Consider our programs for personalized guidance.'
+            : 'أنت تعاني من نقص الوزن. ركز على زيادة السعرات الحرارية مع تمارين القوة لبناء كتلة عضلية صحية. فكر في برامجنا للحصول على إرشادات مخصصة.';
+    } else if (bmi >= 18.5 && bmi < 25) {
+        recommendation = currentLang === 'en'
+            ? 'Great! You have a healthy weight. Maintain your current lifestyle with regular exercise and balanced nutrition. Our programs can help you optimize your fitness further.'
+            : 'رائع! لديك وزن صحي. حافظ على نمط حياتك الحالي مع ممارسة الرياضة بانتظام والتغذية المتوازنة. يمكن لبرامجنا مساعدتك في تحسين لياقتك بشكل أكبر.';
+    } else if (bmi >= 25 && bmi < 30) {
+        recommendation = currentLang === 'en'
+            ? 'You are slightly overweight. A combination of cardio, strength training, and a calorie deficit can help you reach your ideal weight. Check out our tailored programs!'
+            : 'لديك زيادة طفيفة في الوزن. يمكن أن يساعدك الجمع بين تمارين الكارديو وتمارين القوة ونقص السعرات الحرارية في الوصول إلى وزنك المثالي. تحقق من برامجنا المخصصة!';
+    } else {
+        recommendation = currentLang === 'en'
+            ? 'You are in the obese category. We strongly recommend consulting with our professional trainers for a comprehensive fitness and nutrition plan to improve your health safely.'
+            : 'أنت في فئة السمنة. نوصي بشدة بالتشاور مع مدربينا المحترفين للحصول على خطة شاملة للياقة البدنية والتغذية لتحسين صحتك بأمان.';
+    }
+    
+    // Display results in modal
+    document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+    document.getElementById('bmiCategory').textContent = bmiCategory;
+    document.getElementById('bmiCategory').className = `result-category ${bmicategoryClass}`;
+    document.getElementById('caloriesValue').textContent = tdee;
+    document.getElementById('idealWeightValue').textContent = idealWeightRange;
+    document.getElementById('recommendationText').textContent = recommendation;
+    
+    // Show modal
+    openResultsModal();
+}
+
+function openResultsModal() {
+    const modal = document.getElementById('resultsModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeResultsModal() {
+    const modal = document.getElementById('resultsModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking overlay
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        closeResultsModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeResultsModal();
+    }
+});
