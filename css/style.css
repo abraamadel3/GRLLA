@@ -1472,6 +1472,7 @@ html {
   margin-bottom: 0.5rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1482,6 +1483,7 @@ html {
   margin-bottom: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1534,6 +1536,7 @@ html {
 
   .products-showcase {
     gap: 1.5rem;
+    justify-content: center;
   }
 
   .product-showcase-card {
@@ -1698,7 +1701,7 @@ html {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
+  width: 100%;
   margin: 2rem auto;
   padding: 0 2rem;
 }
