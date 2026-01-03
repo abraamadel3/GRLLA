@@ -250,6 +250,11 @@
                             </select>
                         </div>
                         
+                        <div class="form-group">
+                            <label for="bodyfat" data-en="Body Fat % (optional)" data-ar="نسبة الدهون % (اختياري)">Body Fat % (optional)</label>
+                            <input type="number" id="bodyfat" name="bodyfat" min="3" max="60" step="0.1" placeholder="20">
+                        </div>
+                        
                         <button type="submit" class="calculate-btn">
                             <span data-en="Calculate" data-ar="احسب">Calculate</span>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -281,7 +286,7 @@
                                 </defs>
                             </svg>
                         </div>
-                        <h3 data-en="BMI" data-ar="مؤشر كتلة الجسم">BMI</h3>
+                        <h3 data-en="BMI Score" data-ar="مؤشر كتلة الجسم">BMI Score</h3>
                         <div class="result-value" id="bmiValue">--</div>
                         <div class="result-category" id="bmiCategory">--</div>
                     </div>
@@ -298,9 +303,9 @@
                                 </defs>
                             </svg>
                         </div>
-                        <h3 data-en="Daily Calories" data-ar="السعرات اليومية">Daily Calories</h3>
+                        <h3 data-en="Maintenance Calories" data-ar="السعرات الحرارية للحفاظ">Maintenance Calories</h3>
                         <div class="result-value" id="caloriesValue">--</div>
-                        <div class="result-label" data-en="Maintenance" data-ar="للحفاظ">Maintenance</div>
+                        <div class="result-label" id="caloriesFormula">--</div>
                     </div>
                     
                     <div class="result-card">
@@ -317,7 +322,49 @@
                         </div>
                         <h3 data-en="Ideal Weight" data-ar="الوزن المثالي">Ideal Weight</h3>
                         <div class="result-value" id="idealWeightValue">--</div>
-                        <div class="result-label" data-en="Range" data-ar="النطاق">Range</div>
+                        <div class="result-label" data-en="Based on 4 formulas" data-ar="بناءً على 4 معادلات">Based on 4 formulas</div>
+                    </div>
+                </div>
+                
+                <!-- Activity Levels Section -->
+                <div class="results-section">
+                    <h3 data-en="Maintenance Calories by Activity Level" data-ar="السعرات الحرارية للحفاظ حسب مستوى النشاط">Maintenance Calories by Activity Level</h3>
+                    <div class="activity-levels-grid" id="activityLevelsGrid">
+                        <!-- Will be populated by JS -->
+                    </div>
+                    <div class="weekly-calories" id="weeklyCalories">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Ideal Weight Formulas Section -->
+                <div class="results-section">
+                    <h3 data-en="Ideal Weight Calculations" data-ar="حسابات الوزن المثالي">Ideal Weight Calculations</h3>
+                    <div class="ideal-weight-formulas" id="idealWeightFormulas">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Maximum Muscular Potential Section -->
+                <div class="results-section" id="muscularPotentialSection">
+                    <h3 data-en="Maximum Muscular Potential" data-ar="أقصى إمكانات عضلية">Maximum Muscular Potential</h3>
+                    <p class="section-description" data-en="Based on Martin Berkhan's formula" data-ar="بناءً على معادلة مارتن بيركان">Based on Martin Berkhan's formula</p>
+                    <div class="muscular-potential-grid" id="muscularPotentialGrid">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Macronutrients Section -->
+                <div class="results-section">
+                    <h3 data-en="Macronutrients Breakdown" data-ar="تفصيل المغذيات الكبيرة">Macronutrients Breakdown</h3>
+                    <p class="section-description" data-en="Based on your maintenance calories" data-ar="بناءً على السعرات الحرارية للحفاظ">Based on your maintenance calories</p>
+                    <div class="macros-tabs">
+                        <button class="macro-tab active" onclick="switchMacroTab('moderate')" data-en="Moderate Carb (30/35/35)" data-ar="كارب متوسط (30/35/35)">Moderate Carb (30/35/35)</button>
+                        <button class="macro-tab" onclick="switchMacroTab('lower')" data-en="Lower Carb (40/40/20)" data-ar="كارب منخفض (40/40/20)">Lower Carb (40/40/20)</button>
+                        <button class="macro-tab" onclick="switchMacroTab('higher')" data-en="Higher Carb (30/20/50)" data-ar="كارب عالي (30/20/50)">Higher Carb (30/20/50)</button>
+                    </div>
+                    <div class="macros-content" id="macrosContent">
+                        <!-- Will be populated by JS -->
                     </div>
                 </div>
                 

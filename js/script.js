@@ -677,6 +677,8 @@ function calculateFitness() {
     const weight = parseFloat(document.getElementById('weight').value);
     const height = parseFloat(document.getElementById('height').value);
     const activity = document.getElementById('activity').value;
+    const bodyFatInput = document.getElementById('bodyfat').value;
+    const bodyFat = bodyFatInput ? parseFloat(bodyFatInput) : null;
     
     // Calculate BMI
     const heightInMeters = height / 100;
@@ -699,29 +701,85 @@ function calculateFitness() {
         bmicategoryClass = 'obese';
     }
     
-    // Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation
+    // Calculate BMR
     let bmr;
-    if (gender === 'male') {
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+    let formulaUsed = '';
+    
+    if (bodyFat !== null) {
+        // Katch-McArdle Formula (most accurate when body fat is known)
+        const leanBodyMass = weight * (1 - bodyFat / 100);
+        bmr = 370 + (21.6 * leanBodyMass);
+        formulaUsed = currentLang === 'en' ? 'Katch-McArdle Formula' : 'معادلة كاتش-ماكاردل';
     } else {
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        // Mifflin-St Jeor Equation
+        if (gender === 'male') {
+            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+        } else {
+            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        }
+        formulaUsed = currentLang === 'en' ? 'Mifflin-St Jeor Formula' : 'معادلة ميفلين-سانت جيور';
     }
     
-    // Calculate TDEE (Total Daily Energy Expenditure) based on activity level
-    const activityMultipliers = {
-        sedentary: 1.2,
-        light: 1.375,
-        moderate: 1.55,
-        very: 1.725,
-        extra: 1.9
+    // Calculate all activity level multipliers
+    const activityLevels = {
+        bmr: { multiplier: 1.0, label: { en: 'Basal Metabolic Rate', ar: 'معدل الأيض الأساسي' } },
+        sedentary: { multiplier: 1.2, label: { en: 'Sedentary', ar: 'قليل النشاط' } },
+        light: { multiplier: 1.375, label: { en: 'Light Exercise', ar: 'نشاط خفيف' } },
+        moderate: { multiplier: 1.55, label: { en: 'Moderate Exercise', ar: 'نشاط متوسط' } },
+        very: { multiplier: 1.725, label: { en: 'Heavy Exercise', ar: 'نشاط عالي' } },
+        extra: { multiplier: 1.9, label: { en: 'Athlete', ar: 'رياضي' } }
     };
     
-    const tdee = Math.round(bmr * activityMultipliers[activity]);
+    // Calculate TDEE for selected activity level
+    const tdee = Math.round(bmr * activityLevels[activity].multiplier);
+    const weeklyCalories = tdee * 7;
     
-    // Calculate ideal weight range (using BMI 18.5-24.9)
-    const minIdealWeight = (18.5 * heightInMeters * heightInMeters).toFixed(1);
-    const maxIdealWeight = (24.9 * heightInMeters * heightInMeters).toFixed(1);
-    const idealWeightRange = `${minIdealWeight} - ${maxIdealWeight} kg`;
+    // Calculate ideal weight using 4 different formulas
+    const heightInInches = height / 2.54;
+    const inchesOver5Feet = heightInInches - 60;
+    
+    const idealWeights = {
+        hamwi: gender === 'male' 
+            ? 48 + (2.7 * inchesOver5Feet)
+            : 45.5 + (2.2 * inchesOver5Feet),
+        devine: gender === 'male'
+            ? 50 + (2.3 * inchesOver5Feet)
+            : 45.5 + (2.3 * inchesOver5Feet),
+        robinson: gender === 'male'
+            ? 52 + (1.9 * inchesOver5Feet)
+            : 49 + (1.7 * inchesOver5Feet),
+        miller: gender === 'male'
+            ? 56.2 + (1.41 * inchesOver5Feet)
+            : 53.1 + (1.36 * inchesOver5Feet)
+    };
+    
+    const minIdealWeight = Math.min(...Object.values(idealWeights));
+    const maxIdealWeight = Math.max(...Object.values(idealWeights));
+    const idealWeightRange = `${minIdealWeight.toFixed(0)}-${maxIdealWeight.toFixed(0)} kg`;
+    
+    // Calculate maximum muscular potential (Martin Berkhan's formula)
+    const maxWeight5Percent = height - 100;
+    const maxWeight10Percent = maxWeight5Percent * 1.05;
+    const maxWeight15Percent = maxWeight5Percent * 1.10;
+    
+    // Calculate macronutrients for maintenance calories
+    const macros = {
+        moderate: {
+            protein: Math.round((tdee * 0.30) / 4),
+            fats: Math.round((tdee * 0.35) / 9),
+            carbs: Math.round((tdee * 0.35) / 4)
+        },
+        lower: {
+            protein: Math.round((tdee * 0.40) / 4),
+            fats: Math.round((tdee * 0.40) / 9),
+            carbs: Math.round((tdee * 0.20) / 4)
+        },
+        higher: {
+            protein: Math.round((tdee * 0.30) / 4),
+            fats: Math.round((tdee * 0.20) / 9),
+            carbs: Math.round((tdee * 0.50) / 4)
+        }
+    };
     
     // Generate recommendation
     let recommendation = '';
@@ -747,9 +805,31 @@ function calculateFitness() {
     document.getElementById('bmiValue').textContent = bmi.toFixed(1);
     document.getElementById('bmiCategory').textContent = bmiCategory;
     document.getElementById('bmiCategory').className = `result-category ${bmicategoryClass}`;
-    document.getElementById('caloriesValue').textContent = tdee;
+    document.getElementById('caloriesValue').textContent = tdee.toLocaleString();
+    document.getElementById('caloriesFormula').textContent = formulaUsed;
     document.getElementById('idealWeightValue').textContent = idealWeightRange;
     document.getElementById('recommendationText').textContent = recommendation;
+    
+    // Display all activity levels
+    displayActivityLevels(bmr, activityLevels, activity, weeklyCalories);
+    
+    // Display ideal weight formulas
+    displayIdealWeightFormulas(idealWeights);
+    
+    // Display maximum muscular potential (only for males)
+    if (gender === 'male') {
+        displayMuscularPotential(maxWeight5Percent, maxWeight10Percent, maxWeight15Percent);
+        document.getElementById('muscularPotentialSection').style.display = 'block';
+    } else {
+        document.getElementById('muscularPotentialSection').style.display = 'none';
+    }
+    
+    // Display macronutrients (default to moderate)
+    displayMacros('moderate', macros, tdee);
+    
+    // Store macros for tab switching
+    window.currentMacros = macros;
+    window.currentTdee = tdee;
     
     // Show modal
     openResultsModal();
@@ -813,4 +893,133 @@ function copyToClipboard(text) {
             btn.textContent = originalText;
         }, 2000);
     });
+}
+
+// Display all activity levels
+function displayActivityLevels(bmr, activityLevels, selectedActivity, weeklyCalories) {
+    const container = document.getElementById('activityLevelsGrid');
+    let html = '';
+    
+    for (const [key, data] of Object.entries(activityLevels)) {
+        const calories = Math.round(bmr * data.multiplier);
+        const isSelected = key === selectedActivity;
+        html += `
+            <div class="activity-level-item ${isSelected ? 'selected' : ''}">
+                <div class="activity-label">${data.label[currentLang]}</div>
+                <div class="activity-calories">${calories.toLocaleString()} ${currentLang === 'en' ? 'cal/day' : 'سعرة/يوم'}</div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+    
+    // Display weekly calories
+    const weeklyContainer = document.getElementById('weeklyCalories');
+    weeklyContainer.innerHTML = `
+        <div class="weekly-calories-box">
+            <strong>${currentLang === 'en' ? 'Weekly Calories:' : 'السعرات الأسبوعية:'}</strong>
+            <span class="weekly-value">${weeklyCalories.toLocaleString()} ${currentLang === 'en' ? 'calories per week' : 'سعرة في الأسبوع'}</span>
+        </div>
+    `;
+}
+
+// Display ideal weight formulas
+function displayIdealWeightFormulas(idealWeights) {
+    const container = document.getElementById('idealWeightFormulas');
+    const formulas = {
+        hamwi: { name: 'G.J. Hamwi Formula (1964)', nameAr: 'معادلة هامي (1964)' },
+        devine: { name: 'B.J. Devine Formula (1974)', nameAr: 'معادلة ديفاين (1974)' },
+        robinson: { name: 'J.D. Robinson Formula (1983)', nameAr: 'معادلة روبنسون (1983)' },
+        miller: { name: 'D.R. Miller Formula (1983)', nameAr: 'معادلة ميلر (1983)' }
+    };
+    
+    let html = '';
+    for (const [key, weight] of Object.entries(idealWeights)) {
+        html += `
+            <div class="formula-item">
+                <div class="formula-name">${currentLang === 'en' ? formulas[key].name : formulas[key].nameAr}</div>
+                <div class="formula-weight">${weight.toFixed(1)} kg</div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+}
+
+// Display maximum muscular potential
+function displayMuscularPotential(weight5, weight10, weight15) {
+    const container = document.getElementById('muscularPotentialGrid');
+    const html = `
+        <div class="potential-item">
+            <div class="potential-label">${currentLang === 'en' ? 'At 5% Body Fat' : 'عند 5% دهون'}</div>
+            <div class="potential-weight">${weight5.toFixed(1)} kg</div>
+        </div>
+        <div class="potential-item">
+            <div class="potential-label">${currentLang === 'en' ? 'At 10% Body Fat' : 'عند 10% دهون'}</div>
+            <div class="potential-weight">${weight10.toFixed(1)} kg</div>
+        </div>
+        <div class="potential-item">
+            <div class="potential-label">${currentLang === 'en' ? 'At 15% Body Fat' : 'عند 15% دهون'}</div>
+            <div class="potential-weight">${weight15.toFixed(1)} kg</div>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+// Display macronutrients
+function displayMacros(type, macros, tdee) {
+    const container = document.getElementById('macrosContent');
+    const macro = macros[type];
+    
+    const labels = {
+        moderate: { en: 'Moderate Carb (30/35/35)', ar: 'كارب متوسط (30/35/35)' },
+        lower: { en: 'Lower Carb (40/40/20)', ar: 'كارب منخفض (40/40/20)' },
+        higher: { en: 'Higher Carb (30/20/50)', ar: 'كارب عالي (30/20/50)' }
+    };
+    
+    const html = `
+        <div class="macros-display">
+            <div class="macro-item">
+                <div class="macro-icon">🥩</div>
+                <div class="macro-info">
+                    <div class="macro-label">${currentLang === 'en' ? 'Protein' : 'بروتين'}</div>
+                    <div class="macro-value">${macro.protein}g</div>
+                </div>
+            </div>
+            <div class="macro-item">
+                <div class="macro-icon">🥑</div>
+                <div class="macro-info">
+                    <div class="macro-label">${currentLang === 'en' ? 'Fats' : 'دهون'}</div>
+                    <div class="macro-value">${macro.fats}g</div>
+                </div>
+            </div>
+            <div class="macro-item">
+                <div class="macro-icon">🍞</div>
+                <div class="macro-info">
+                    <div class="macro-label">${currentLang === 'en' ? 'Carbs' : 'كربوهيدرات'}</div>
+                    <div class="macro-value">${macro.carbs}g</div>
+                </div>
+            </div>
+        </div>
+        <div class="macro-note">
+            ${currentLang === 'en' 
+                ? '4 calories per gram of protein and carbs, 9 calories per gram of fats' 
+                : '4 سعرات حرارية لكل جرام من البروتين والكربوهيدرات، 9 سعرات حرارية لكل جرام من الدهون'}
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+// Switch macro tab
+function switchMacroTab(type) {
+    // Update active tab
+    document.querySelectorAll('.macro-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Display selected macros
+    displayMacros(type, window.currentMacros, window.currentTdee);
 }
