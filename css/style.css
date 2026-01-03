@@ -565,20 +565,18 @@ html {
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: #ffffff;
-  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7),
-               0 0 20px rgba(108, 99, 255, 0.8);
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(108, 99, 255, 0.8);
   animation: glow 3s ease-in-out infinite;
 }
 
 @keyframes glow {
-  0%, 100% {
-    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7),
-                 0 0 20px rgba(108, 99, 255, 0.8);
+  0%,
+  100% {
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(108, 99, 255, 0.8);
   }
   50% {
-    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7),
-                 0 0 30px rgba(0, 217, 255, 1),
-                 0 0 40px rgba(108, 99, 255, 0.6);
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 217, 255, 1),
+      0 0 40px rgba(108, 99, 255, 0.6);
   }
 }
 
@@ -587,7 +585,7 @@ html {
   .transformation-duration {
     padding: 1.3rem 1rem;
   }
-  
+
   .transformation-duration .duration-text {
     font-size: 0.95rem;
     letter-spacing: 1.5px;
@@ -751,7 +749,6 @@ html {
 .details .info ul li svg path:last-child {
   fill: var(--primary-color);
 }
-
 
 /* FAQ Section */
 .faq-section {
@@ -1782,7 +1779,6 @@ html {
   margin: 0;
 }
 
-
 /* Popular Tag */
 .populartag {
   position: absolute;
@@ -1803,7 +1799,8 @@ html {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -1845,7 +1842,7 @@ html {
     gap: 2rem;
     padding: 0 1.5rem;
   }
-  
+
   .item {
     margin: 1rem 0;
   }
@@ -1855,23 +1852,23 @@ html {
   .items {
     padding: 0 1rem;
   }
-  
+
   .item {
     margin: 0.5rem 0;
   }
-  
+
   .headline {
     padding: 1.5rem;
   }
-  
+
   .headline h2 {
     font-size: 1.5rem;
   }
-  
+
   .headline h3 {
     font-size: 2rem;
   }
-  
+
   .booknow {
     margin: 1.5rem;
     padding: 0.9rem 1.5rem;
@@ -2353,7 +2350,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  background: #25D366;
+  background: #25d366;
   color: white;
   text-decoration: none;
   padding: 1rem 2rem;
@@ -2364,7 +2361,7 @@ html {
 }
 
 .whatsapp-btn:hover {
-  background: #20BA5A;
+  background: #20ba5a;
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
 }
@@ -2427,14 +2424,18 @@ html {
 }
 
 .program-section-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(108, 99, 255, 0.1) 0%,
+    transparent 70%
+  );
   z-index: 0;
   animation: pulse 4s ease-in-out infinite;
 }
@@ -2455,7 +2456,8 @@ html {
 }
 
 @keyframes glow {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 10px rgba(108, 99, 255, 0.5));
   }
   50% {
@@ -2482,3 +2484,435 @@ html {
   }
 }
 
+/* Advanced Calculator Results Sections */
+.results-section {
+  margin: 2.5rem 0;
+  padding: 2rem;
+  background: rgba(15, 15, 35, 0.4);
+  border-radius: 20px;
+  border: 1px solid rgba(108, 99, 255, 0.15);
+}
+
+.results-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  text-align: center;
+}
+
+.section-description {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Activity Levels Grid */
+.activity-levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.activity-level-item {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  border: 2px solid rgba(108, 99, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.activity-level-item.selected {
+  border-color: var(--primary-color);
+  background: rgba(108, 99, 255, 0.15);
+  box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+}
+
+.activity-level-item:hover {
+  border-color: var(--secondary-color);
+  transform: translateY(-3px);
+}
+
+.activity-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activity-calories {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.weekly-calories-box {
+  background: rgba(108, 99, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  margin-top: 1rem;
+}
+
+.weekly-calories-box strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.weekly-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Ideal Weight Formulas */
+.ideal-weight-formulas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.formula-item {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  border: 2px solid rgba(108, 99, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.formula-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(108, 99, 255, 0.2);
+}
+
+.formula-name {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.formula-weight {
+  font-size: 1.5rem;
+  font-weight: 900;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Muscular Potential */
+.muscular-potential-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.potential-item {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 2px solid rgba(108, 99, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.potential-item:hover {
+  border-color: var(--secondary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(0, 217, 255, 0.2);
+}
+
+.potential-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.potential-weight {
+  font-size: 1.6rem;
+  font-weight: 900;
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Macronutrients Tabs */
+.macros-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.macro-tab {
+  background: rgba(26, 26, 46, 0.6);
+  border: 2px solid rgba(108, 99, 255, 0.2);
+  color: var(--text-secondary);
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.macro-tab:hover {
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.macro-tab.active {
+  background: var(--gradient-1);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 5px 20px rgba(108, 99, 255, 0.4);
+}
+
+/* Macros Display */
+.macros-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.macro-item {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 2px solid rgba(108, 99, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.macro-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.3);
+}
+
+.macro-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.macro-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.macro-value {
+  font-size: 2rem;
+  font-weight: 900;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.macro-note {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-style: italic;
+  padding: 1rem;
+  background: rgba(108, 99, 255, 0.05);
+  border-radius: 10px;
+}
+
+/* Mobile Optimizations for Calculator Results */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 2rem 1.5rem;
+    max-height: 85vh;
+    width: 95%;
+  }
+
+  .modal-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .results-section {
+    padding: 1.5rem 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .results-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .activity-levels-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .activity-level-item {
+    padding: 1rem 0.8rem;
+  }
+
+  .activity-label {
+    font-size: 0.75rem;
+  }
+
+  .activity-calories {
+    font-size: 1.1rem;
+  }
+
+  .weekly-calories-box {
+    padding: 1rem;
+  }
+
+  .weekly-value {
+    font-size: 1.4rem;
+  }
+
+  .ideal-weight-formulas {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .formula-item {
+    padding: 1rem;
+  }
+
+  .muscular-potential-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .potential-item {
+    padding: 1rem;
+  }
+
+  .macros-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .macro-tab {
+    padding: 0.7rem 1rem;
+    font-size: 0.75rem;
+    width: 100%;
+  }
+
+  .macros-display {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .macro-item {
+    padding: 1.2rem;
+  }
+
+  .macro-icon {
+    font-size: 2rem;
+  }
+
+  .macro-value {
+    font-size: 1.6rem;
+  }
+
+  .result-value {
+    font-size: 2rem;
+  }
+
+  .result-card {
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
+  }
+
+  .modal-close {
+    top: 1rem;
+    right: 1rem;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+  }
+
+  .modal-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .results-section {
+    padding: 1rem 0.8rem;
+    margin: 1rem 0;
+  }
+
+  .results-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .activity-levels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-level-item {
+    padding: 0.8rem;
+  }
+
+  .result-card h3 {
+    font-size: 0.85rem;
+  }
+
+  .result-value {
+    font-size: 1.8rem;
+  }
+
+  .recommendation-box {
+    padding: 1.2rem;
+  }
+
+  .recommendation-box h4 {
+    font-size: 1.1rem;
+  }
+
+  .recommendation-box p {
+    font-size: 0.9rem;
+  }
+}
