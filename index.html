@@ -485,6 +485,47 @@
         <div class="section-header" style="text-align: center; margin: 3rem 0 2rem 0;">
             <h2 id="packages" data-en="Membership Plans" data-ar="خطط العضوية" style="font-size: 2.5rem; font-weight: 900; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Membership Plans</h2>
         </div>
+
+        <!-- Promo Code Section: countdown shown first (FOMO), then input or success badge -->
+        <div class="promo-section wraper">
+            <div class="promo-card" id="promoCard">
+                <!-- Countdown: visible before offer end (FOMO) - shown by JS when before end date -->
+                <div class="promo-countdown promo-countdown-standalone" id="promoCountdownSection" style="display: none;">
+                    <span class="promo-countdown-label" data-en="Offer ends in" data-ar="ينتهي العرض خلال">Offer ends in</span>
+                    <div class="promo-countdown-grid">
+                        <div class="promo-countdown-item">
+                            <span class="promo-countdown-value" id="promoDays">0</span>
+                            <span class="promo-countdown-unit" data-en="Days" data-ar="أيام">Days</span>
+                        </div>
+                        <div class="promo-countdown-item">
+                            <span class="promo-countdown-value" id="promoHours">0</span>
+                            <span class="promo-countdown-unit" data-en="Hours" data-ar="ساعات">Hours</span>
+                        </div>
+                        <div class="promo-countdown-item">
+                            <span class="promo-countdown-value" id="promoMins">0</span>
+                            <span class="promo-countdown-unit" data-en="Mins" data-ar="دقائق">Mins</span>
+                        </div>
+                        <div class="promo-countdown-item">
+                            <span class="promo-countdown-value" id="promoSecs">0</span>
+                            <span class="promo-countdown-unit" data-en="Secs" data-ar="ثواني">Secs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="promo-input-wrap" id="promoInputWrap">
+                    <label for="promoInput" class="promo-label" data-en="Have a promo code?" data-ar="لديك كود خصم؟">Have a promo code?</label>
+                    <div class="promo-row">
+                        <input type="text" id="promoInput" class="promo-input" placeholder="" autocomplete="off" maxlength="20" data-placeholder-en="Enter code" data-placeholder-ar="أدخل الكود">
+                        <button type="button" class="promo-apply-btn" id="promoApplyBtn" data-en="Apply" data-ar="تطبيق">Apply</button>
+                    </div>
+                    <p class="promo-error" id="promoError" role="alert"></p>
+                </div>
+                <div class="promo-success" id="promoSuccess" hidden>
+                    <div class="promo-success-badge">
+                        <span class="promo-success-text" data-en="15% off all packages" data-ar="خصم 15% على جميع الباقات">15% off all packages</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- 1 Month Packages -->
         <div class="program-section-header">

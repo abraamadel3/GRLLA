@@ -1522,6 +1522,219 @@ html {
   box-shadow: var(--shadow-lg);
 }
 
+/* Promo Code Section */
+.promo-section {
+  padding: 0 2rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.promo-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  border: 2px solid rgba(108, 99, 255, 0.2);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s;
+}
+
+.promo-card:hover {
+  border-color: rgba(108, 99, 255, 0.4);
+  box-shadow: 0 12px 40px rgba(108, 99, 255, 0.2);
+}
+
+.promo-label {
+  display: block;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.promo-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.promo-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 1rem 1.25rem;
+  background: rgba(15, 15, 35, 0.6);
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  border-radius: 50px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.promo-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.promo-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+}
+
+.promo-apply-btn {
+  padding: 1rem 2rem;
+  background: var(--gradient-1);
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+}
+
+.promo-apply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.promo-error {
+  margin-top: 0.75rem;
+  color: #ff6b9d;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-height: 1.4em;
+}
+
+.promo-success {
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.promo-success[hidden] {
+  display: none !important;
+}
+
+.promo-success-badge {
+  display: inline-block;
+  background: var(--gradient-1);
+  padding: 0.75rem 1.75rem;
+  border-radius: 50px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+}
+
+.promo-success-text {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.promo-countdown-standalone {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(108, 99, 255, 0.15);
+}
+
+.promo-countdown-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.promo-countdown-grid {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.promo-countdown-item {
+  background: rgba(15, 15, 35, 0.7);
+  border: 2px solid rgba(108, 99, 255, 0.3);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  min-width: 70px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.promo-countdown-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.25);
+}
+
+.promo-countdown-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 900;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.promo-countdown-unit {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .promo-section {
+    padding: 0 1rem 2rem;
+  }
+
+  .promo-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .promo-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .promo-input {
+    min-width: 0;
+  }
+
+  .promo-apply-btn {
+    width: 100%;
+  }
+
+  .promo-countdown-grid {
+    gap: 0.75rem;
+  }
+
+  .promo-countdown-item {
+    min-width: 60px;
+    padding: 0.75rem 1rem;
+  }
+
+  .promo-countdown-value {
+    font-size: 1.4rem;
+  }
+}
+
 @media (max-width: 768px) {
   .shop-now-section {
     padding: 3rem 1rem;

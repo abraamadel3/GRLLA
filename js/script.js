@@ -63,6 +63,7 @@ function toggleLanguage(event) {
     renderPackages(oneMonthPackages, 'oneMonthPackages');
     renderPackages(threeMonthPackages, 'threeMonthPackages');
     renderFAQ();
+    setPromoPlaceholder();
 }
 
 // Update section headline background images based on language
@@ -496,6 +497,139 @@ const threeMonthPackages = [
 // Combine all packages for rendering
 const packages = [...oneMonthPackages, ...threeMonthPackages];
 
+// Promo code: Maro15 = 15% off; offer ends 12 Feb 2026 11:59 PM
+const PROMO_CODE = 'Maro15';
+const PROMO_DISCOUNT = 15;
+const PROMO_STORAGE_KEY = 'grlla_promo';
+// 12/2/2026 11:59 PM (Feb 12, 2026)
+const PROMO_END_DATE = new Date(2026, 1, 12, 23, 59, 0).getTime();
+
+function getPromoState() {
+  const now = Date.now();
+  if (now >= PROMO_END_DATE) {
+    try { localStorage.removeItem(PROMO_STORAGE_KEY); } catch (_) {}
+    return { active: false, endTime: null };
+  }
+  let applied = false;
+  try {
+    const raw = localStorage.getItem(PROMO_STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      applied = !!data.applied;
+    }
+  } catch (_) {}
+  return { active: applied, endTime: PROMO_END_DATE };
+}
+
+function setPromoActive() {
+  localStorage.setItem(PROMO_STORAGE_KEY, JSON.stringify({ applied: true }));
+}
+
+function clearPromo() {
+  localStorage.removeItem(PROMO_STORAGE_KEY);
+}
+
+function parsePrice(priceStr) {
+  if (!priceStr || typeof priceStr !== 'string') return 0;
+  const num = parseInt(priceStr.replace(/\D/g, ''), 10);
+  return isNaN(num) ? 0 : num;
+}
+
+function formatPrice(amount) {
+  return Math.round(amount) + ' EGP';
+}
+
+function applyPromoCode() {
+  const input = document.getElementById('promoInput');
+  const errorEl = document.getElementById('promoError');
+  const code = (input && input.value || '').trim();
+  errorEl.textContent = '';
+  if (!code) {
+    errorEl.textContent = currentLang === 'en' ? 'Please enter a promo code.' : 'يرجى إدخال كود الخصم.';
+    return;
+  }
+  if (code.toLowerCase() !== PROMO_CODE.toLowerCase()) {
+    errorEl.textContent = currentLang === 'en' ? 'Invalid promo code.' : 'كود الخصم غير صحيح.';
+    return;
+  }
+  setPromoActive();
+  updatePromoUI(true);
+  startPromoCountdown();
+  document.getElementById('oneMonthPackages').innerHTML = '';
+  document.getElementById('threeMonthPackages').innerHTML = '';
+  renderPackages(oneMonthPackages, 'oneMonthPackages');
+  renderPackages(threeMonthPackages, 'threeMonthPackages');
+}
+
+function updatePromoUI(promoActive) {
+  const inputWrap = document.getElementById('promoInputWrap');
+  const successEl = document.getElementById('promoSuccess');
+  if (promoActive) {
+    if (inputWrap) inputWrap.style.display = 'none';
+    if (successEl) {
+      successEl.removeAttribute('hidden');
+      successEl.style.display = 'block';
+    }
+  } else {
+    if (inputWrap) inputWrap.style.display = 'block';
+    if (successEl) {
+      successEl.setAttribute('hidden', '');
+      successEl.style.display = 'none';
+    }
+  }
+}
+
+// Show countdown section when before end date (FOMO); hide when expired
+function updatePromoCountdownVisibility(show) {
+  const section = document.getElementById('promoCountdownSection');
+  if (section) {
+    section.style.display = show ? 'block' : 'none';
+  }
+}
+
+function setPromoPlaceholder() {
+  const input = document.getElementById('promoInput');
+  if (!input) return;
+  input.placeholder = currentLang === 'en'
+    ? (input.getAttribute('data-placeholder-en') || 'Enter code')
+    : (input.getAttribute('data-placeholder-ar') || 'أدخل الكود');
+}
+
+let promoCountdownInterval = null;
+
+function startPromoCountdown() {
+  function tick() {
+    const state = getPromoState();
+    const now = Date.now();
+    if (!state.endTime || now >= state.endTime) {
+      if (promoCountdownInterval) clearInterval(promoCountdownInterval);
+      promoCountdownInterval = null;
+      clearPromo();
+      updatePromoCountdownVisibility(false);
+      updatePromoUI(false);
+      document.getElementById('oneMonthPackages').innerHTML = '';
+      document.getElementById('threeMonthPackages').innerHTML = '';
+      renderPackages(oneMonthPackages, 'oneMonthPackages');
+      renderPackages(threeMonthPackages, 'threeMonthPackages');
+      return;
+    }
+    const left = Math.max(0, state.endTime - now);
+    const days = Math.floor(left / (24 * 60 * 60 * 1000));
+    const hours = Math.floor((left % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const mins = Math.floor((left % (60 * 60 * 1000)) / (60 * 1000));
+    const secs = Math.floor((left % (60 * 1000)) / 1000);
+    const el = (id) => document.getElementById(id);
+    if (el('promoDays')) el('promoDays').textContent = days;
+    if (el('promoHours')) el('promoHours').textContent = String(hours).padStart(2, '0');
+    if (el('promoMins')) el('promoMins').textContent = String(mins).padStart(2, '0');
+    if (el('promoSecs')) el('promoSecs').textContent = String(secs).padStart(2, '0');
+  }
+  if (promoCountdownInterval) clearInterval(promoCountdownInterval);
+  updatePromoCountdownVisibility(true);
+  tick();
+  promoCountdownInterval = setInterval(tick, 1000);
+}
+
 const checkIcon = `<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_193_2889)"><path d="M18.2467 10.0489L13.4347 15.8203L11.7502 13.8007C11.5927 13.6117 11.3995 13.4556 11.1816 13.3412C10.9638 13.2269 10.7256 13.1566 10.4806 13.1343C10.2355 13.112 9.98854 13.1382 9.75366 13.2114C9.51877 13.2846 9.3006 13.4033 9.1116 13.5608C8.92259 13.7183 8.76647 13.9115 8.65212 14.1293C8.53778 14.3472 8.46747 14.5854 8.44519 14.8304C8.42292 15.0754 8.44912 15.3224 8.52231 15.5573C8.59549 15.7922 8.71422 16.0104 8.87172 16.1994L11.9955 19.9494C12.1711 20.1606 12.391 20.3307 12.6396 20.4475C12.8883 20.5642 13.1596 20.6248 13.4343 20.625C13.709 20.6252 13.9804 20.5649 14.2292 20.4485C14.478 20.332 14.6981 20.1623 14.8739 19.9512L21.1252 12.4512C21.284 12.2624 21.4041 12.044 21.4784 11.8086C21.5526 11.5733 21.5797 11.3256 21.558 11.0797C21.5364 10.8339 21.4664 10.5947 21.352 10.376C21.2377 10.1573 21.0813 9.96328 20.8918 9.80515C20.7024 9.64701 20.4835 9.52784 20.2479 9.45448C20.0122 9.38112 19.7644 9.35501 19.5187 9.37766C19.2729 9.4003 19.034 9.47125 18.8158 9.58643C18.5975 9.70162 18.4041 9.85877 18.2467 10.0489Z" fill="white"></path><path d="M14.9981 0C12.0313 0 9.13124 0.879735 6.6645 2.52796C4.19776 4.17618 2.27518 6.51886 1.13986 9.25975C0.00454617 12.0006 -0.292504 15.0166 0.286274 17.9264C0.865053 20.8361 2.29366 23.5088 4.39145 25.6066C6.48924 27.7044 9.16198 29.133 12.0717 29.7118C14.9814 30.2906 17.9974 29.9935 20.7383 28.8582C23.4792 27.7229 25.8219 25.8003 27.4701 23.3336C29.1183 20.8668 29.9981 17.9667 29.9981 15C29.9938 11.0231 28.4121 7.2102 25.6 4.39808C22.7878 1.58595 18.975 0.0042353 14.9981 0ZM14.9981 26.25C12.773 26.25 10.5979 25.5902 8.74789 24.354C6.89784 23.1179 5.45589 21.3609 4.60441 19.3052C3.75292 17.2495 3.53014 14.9875 3.96422 12.8052C4.3983 10.6229 5.46976 8.61839 7.0431 7.04505C8.61644 5.47171 10.621 4.40025 12.8033 3.96617C14.9856 3.53208 17.2476 3.75487 19.3032 4.60636C21.3589 5.45784 23.1159 6.89978 24.3521 8.74984C25.5883 10.5999 26.2481 12.775 26.2481 15C26.2448 17.9827 25.0585 20.8423 22.9494 22.9514C20.8403 25.0604 17.9807 26.2467 14.9981 26.25Z" fill="white"></path></g><defs><clipPath id="clip0_193_2889"><rect width="30" height="30" fill="white"></rect></clipPath></defs></svg>`;
 
 function renderPackages(pkgs, containerId) {
@@ -503,10 +637,21 @@ function renderPackages(pkgs, containerId) {
     container.innerHTML = ''; // Clear existing content
     const itemsDiv = document.createElement('div');
     itemsDiv.className = 'items';
+    const promo = getPromoState();
+    const useDiscount = promo.active && promo.endTime && promo.endTime > Date.now();
     
     pkgs.forEach(pkg => {
         const item = document.createElement('div');
         item.className = `item ${pkg.popular ? 'popular' : ''} ${pkg.name.toLowerCase()}-package`;
+        
+        let displayPrice = pkg.price;
+        let comparePrice = pkg.compareAtPrice || '';
+        if (useDiscount) {
+            const original = parsePrice(pkg.price);
+            const discounted = Math.round(original * (1 - PROMO_DISCOUNT / 100));
+            displayPrice = formatPrice(discounted);
+            comparePrice = pkg.price;
+        }
         
         let html = '<div class="headline">';
         if (pkg.popular) {
@@ -516,10 +661,10 @@ function renderPackages(pkgs, containerId) {
         html += `<h2 data-en="${pkg.title.en}" data-ar="${pkg.title.ar}">${pkg.title[currentLang]}</h2>`;
         html += `<div class="duration" data-en="PER / ${pkg.duration.en}" data-ar="لكل / ${pkg.duration.ar}">PER / ${pkg.duration[currentLang]}</div>`;
         html += '<div class="price-container">';
-        if (pkg.compareAtPrice) {
-            html += `<div class="compare-price">${pkg.compareAtPrice}</div>`;
+        if (comparePrice) {
+            html += `<div class="compare-price">${comparePrice}</div>`;
         }
-        html += `<h3 class="actual-price">${pkg.price}</h3>`;
+        html += `<h3 class="actual-price">${displayPrice}</h3>`;
         html += '</div>';
         html += '</div>';
         html += '<ul class="features-list">';
@@ -535,7 +680,8 @@ function renderPackages(pkgs, containerId) {
         });
         
         html += '</ul>';
-        html += `<button class="booknow" onclick="showPaymentPopup('${pkg.name}', '${pkg.price}', '${pkg.duration[currentLang]}')" data-en="Subscribe Now" data-ar="اشترك الآن">Subscribe Now</button>`;
+        const durationLabel = pkg.duration[currentLang];
+        html += `<button class="booknow" onclick="showPaymentPopup('${pkg.name}', '${displayPrice}', '${durationLabel}')" data-en="Subscribe Now" data-ar="اشترك الآن">Subscribe Now</button>`;
         
         item.innerHTML = html;
         itemsDiv.appendChild(item);
@@ -646,9 +792,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // updateSectionHeadlines(); // Commented out - now using text headings
     initSuccessSlider();
     initReviewSlider();
+    
+    // Promo code: countdown shown first (FOMO), then input or success badge
+    const promo = getPromoState();
+    if (promo.endTime) {
+      updatePromoCountdownVisibility(true);
+      startPromoCountdown();
+    } else {
+      updatePromoCountdownVisibility(false);
+    }
+    updatePromoUI(promo.active);
+    setPromoPlaceholder();
+    
     renderPackages(oneMonthPackages, 'oneMonthPackages');
     renderPackages(threeMonthPackages, 'threeMonthPackages');
     renderFAQ();
+    
+    // Promo Apply button and Enter key
+    const promoApplyBtn = document.getElementById('promoApplyBtn');
+    const promoInput = document.getElementById('promoInput');
+    if (promoApplyBtn) promoApplyBtn.addEventListener('click', applyPromoCode);
+    if (promoInput) {
+        promoInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); applyPromoCode(); }
+        });
+    }
     
     // Duplicate ticker for infinite scroll effect
     document.querySelectorAll('.ticker').forEach(ticker => {
