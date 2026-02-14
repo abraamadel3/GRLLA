@@ -167,7 +167,7 @@ const oneMonthPackages = [
         name: 'GRLLA GOLD',
         title: { en: 'GRLLA GOLD PACKAGE', ar: 'باقة GRLLA GOLD' },
         duration: { en: '1 MONTH', ar: 'شهر واحد' },
-        price: '1500 EGP',
+        price: '1800 EGP',
         compareAtPrice: '2500 EGP',
         popular: false,
         features: [
@@ -203,7 +203,7 @@ const oneMonthPackages = [
         name: 'GRLLA PLATINUM',
         title: { en: 'GRLLA PLATINUM PACKAGE', ar: 'باقة GRLLA PLATINUM' },
         duration: { en: '1 MONTH', ar: 'شهر واحد' },
-        price: '2500 EGP',
+        price: '3200 EGP',
         compareAtPrice: '4000 EGP',
         popular: true,
         features: [
@@ -254,7 +254,7 @@ const oneMonthPackages = [
         name: 'GRLLA ELITE',
         title: { en: 'GRLLA ELITE PACKAGE', ar: 'باقة GRLLA ELITE' },
         duration: { en: '1 MONTH', ar: 'شهر واحد' },
-        price: '4000 EGP',
+        price: '4300 EGP',
         compareAtPrice: '6000 EGP',
         popular: false,
         features: [
