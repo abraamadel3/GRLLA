@@ -238,11 +238,6 @@ const oneMonthPackages = [
                 description: { en: 'Question from customer service 4 times a month (by phone)', ar: 'استفسار من خدمة العملاء 4 مرات شهريًا (عبر الهاتف)' }
             },
             { 
-                icon: '⚕️',
-                title: { en: 'Medical Team', ar: 'الفريق الطبي' },
-                description: { en: 'Follow-up with a medical team, whether for injury rehabilitation or disease treatment', ar: 'متابعة مع فريق طبي، سواء لإعادة تأهيل الإصابات أو علاج الأمراض' }
-            },
-            { 
                 icon: '❄️',
                 title: { en: 'Freeze Option', ar: 'خيار التجميد' },
                 description: { en: 'This package includes the option to freeze the subscription for 15 days', ar: 'تتضمن هذه الباقة خيار تجميد الاشتراك لمدة 15 يومًا' }
@@ -287,11 +282,6 @@ const oneMonthPackages = [
                 icon: '📞',
                 title: { en: 'Customer Service', ar: 'خدمة العملاء' },
                 description: { en: 'Question from customer service 6 times a month', ar: 'استفسار من خدمة العملاء 6 مرات شهريًا' }
-            },
-            { 
-                icon: '⚕️',
-                title: { en: 'Medical Team', ar: 'الفريق الطبي' },
-                description: { en: 'Follow-up with a medical team, whether for injury rehabilitation or disease treatment', ar: 'متابعة مع فريق طبي، سواء لإعادة تأهيل الإصابات أو علاج الأمراض' }
             },
             { 
                 icon: '👤',
@@ -404,11 +394,6 @@ const threeMonthPackages = [
                 description: { en: 'Question from customer service 4 times a month (by phone)', ar: 'استفسار من خدمة العملاء 4 مرات شهريًا (عبر الهاتف)' }
             },
             { 
-                icon: '⚕️',
-                title: { en: 'Medical Team', ar: 'الفريق الطبي' },
-                description: { en: 'Follow-up with a medical team, whether for injury rehabilitation or disease treatment', ar: 'متابعة مع فريق طبي، سواء لإعادة تأهيل الإصابات أو علاج الأمراض' }
-            },
-            { 
                 icon: '❄️',
                 title: { en: 'Freeze Option', ar: 'خيار التجميد' },
                 description: { en: 'This package includes the option to freeze the subscription for 15 days', ar: 'تتضمن هذه الباقة خيار تجميد الاشتراك لمدة 15 يومًا' }
@@ -453,11 +438,6 @@ const threeMonthPackages = [
                 icon: '📞',
                 title: { en: 'Customer Service', ar: 'خدمة العملاء' },
                 description: { en: 'Question from customer service 6 times a month', ar: 'استفسار من خدمة العملاء 6 مرات شهريًا' }
-            },
-            { 
-                icon: '⚕️',
-                title: { en: 'Medical Team', ar: 'الفريق الطبي' },
-                description: { en: 'Follow-up with a medical team, whether for injury rehabilitation or disease treatment', ar: 'متابعة مع فريق طبي، سواء لإعادة تأهيل الإصابات أو علاج الأمراض' }
             },
             { 
                 icon: '👤',
